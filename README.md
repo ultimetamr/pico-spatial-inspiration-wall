@@ -6,10 +6,12 @@
 | --- | --- |
 | 作品名称 | 桌面空间灵感墙 |
 | 分类 | 效率工具 / 创意与生产力 |
+| 一句话介绍 | 将文字、图片、链接与涂鸦永久锚定到真实墙面的 PICO 空间灵感看板。 |
 | 应用类型 | PICO Shared Space 共享空间应用 |
 | 包名 | `com.spatialapps.inspirationwall` |
 | 版本 | `1.0` |
 | PICO Spatial SDK BOM | `0.13.3` |
+| 项目地址 | <https://github.com/ultimetamr/pico-spatial-inspiration-wall> |
 
 ## 应用介绍
 
