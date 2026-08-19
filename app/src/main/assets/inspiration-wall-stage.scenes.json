@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "0.1",
+  "source": "pack_editor_bundle",
+  "activeScenePath": "Sources/Scenes/Hi.usda",
+  "scenes": [
+    {
+      "id": "scene:hi",
+      "name": "Hi",
+      "bundlePath": "Sources/Scenes/Hi.usda",
+      "entityCount": 0,
+      "container": {
+        "appContainer": "Stage",
+        "editorType": "Stage",
+        "spaceRequirement": "FullSpace",
+        "bounded": false,
+        "coordinateSystem": "right-handed, meters"
+      }
+    }
+  ]
+}
