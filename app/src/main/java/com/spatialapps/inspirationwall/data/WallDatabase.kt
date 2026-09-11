@@ -43,6 +43,12 @@ interface WallDao {
 
     @Query("DELETE FROM cards WHERE deleted = 1 AND updatedAt < :deadline")
     suspend fun purgeDeleted(deadline: Long)
+
+    @Query("DELETE FROM cards WHERE type = :type")
+    suspend fun deleteCardsByType(type: String)
+
+    @Query("DELETE FROM cards WHERE content = :content")
+    suspend fun deleteCardsByContent(content: String)
 }
 
 @Database(

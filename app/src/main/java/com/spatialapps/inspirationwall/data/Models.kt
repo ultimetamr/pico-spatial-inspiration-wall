@@ -5,7 +5,7 @@ import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-enum class CardType { TEXT, IMAGE, LINK, DOODLE }
+enum class CardType { TEXT, IMAGE, LINK }
 
 enum class AnchorState { NOT_BOUND, SCANNING, BOUND, RELOCALIZING, UNAVAILABLE, ERROR }
 

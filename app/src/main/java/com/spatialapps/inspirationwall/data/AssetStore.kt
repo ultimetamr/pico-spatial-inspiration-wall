@@ -2,13 +2,15 @@ package com.spatialapps.inspirationwall.data
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.net.Uri
 import java.io.File
 import java.io.FileOutputStream
 
-class AssetStore(context: Context) {
+class AssetStore(private val context: Context) {
     private val root = File(context.filesDir, "wall-assets").apply { mkdirs() }
 
     fun ensureDemoImage(id: String): String {
@@ -30,9 +32,47 @@ class AssetStore(context: Context) {
         return target.absolutePath
     }
 
-    fun saveDoodle(id: String, pointsJson: String): String {
-        val target = File(root, "$id-doodle.json")
-        target.writeText(pointsJson)
-        return target.absolutePath
+    fun importImage(id: String, source: Uri): String {
+        val resolver = context.contentResolver
+        val mimeType = resolver.getType(source)
+        require(mimeType == null || mimeType.startsWith("image/")) { "选择的文件不是图片" }
+        val extension = when (mimeType) {
+            "image/png" -> "png"
+            "image/webp" -> "webp"
+            "image/gif" -> "gif"
+            else -> "jpg"
+        }
+        val target = File(root, "$id-image.$extension")
+        try {
+            resolver.openInputStream(source)?.use { input ->
+                FileOutputStream(target).use { output ->
+                    val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+                    var total = 0L
+                    while (true) {
+                        val count = input.read(buffer)
+                        if (count < 0) break
+                        total += count
+                        require(total <= MAX_IMAGE_BYTES) { "图片不能超过 50 MB" }
+                        output.write(buffer, 0, count)
+                    }
+                }
+            } ?: error("无法读取所选图片")
+            val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+            BitmapFactory.decodeFile(target.absolutePath, bounds)
+            require(bounds.outWidth > 0 && bounds.outHeight > 0) { "图片格式无法识别" }
+            return target.absolutePath
+        } catch (error: Throwable) {
+            target.delete()
+            throw error
+        }
+    }
+
+    fun deleteLegacyDoodles() {
+        root.listFiles { file -> file.name.endsWith("-doodle.json") }
+            ?.forEach { it.delete() }
+    }
+
+    private companion object {
+        const val MAX_IMAGE_BYTES = 50L * 1024L * 1024L
     }
 }

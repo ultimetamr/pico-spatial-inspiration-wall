@@ -53,6 +53,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.annotation)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     kapt(libs.androidx.room.compiler)
